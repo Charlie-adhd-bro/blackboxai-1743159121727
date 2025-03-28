@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мемориалы Великой Отечественной на Урале | Память Урала</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/modern-styles.css">
+    <style>
+        #map { 
+            height: 500px;
+            z-index: 1;
+        }
+        .filter-panel {
+            z-index: 1000;
+        }
+        .memorial-marker {
+            background-color: #1E3A8A;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-landmark text-2xl text-yellow-400"></i>
+                <a href="index.html" class="text-2xl font-bold">Память Урала</a>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-yellow-300">Главная</a></li>
+                    <li><a href="memorials.html" class="font-bold text-yellow-300">Мемориалы</a></li>
+                    <li><a href="heroes.html" class="hover:text-yellow-300">Герои</a></li>
+                    <li><a href="tours.html" class="hover:text-yellow-300">Экскурсии</a></li>
+                    <li><a href="contacts.html" class="hover:text-yellow-300">Контакты</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button md:hidden text-2xl" aria-expanded="false" aria-label="Меню">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden bg-blue-900 text-white">
+            <ul class="px-4 py-2 space-y-2">
+                <li><a href="index.html" class="block py-2 hover:text-yellow-300">Главная</a></li>
+                <li><a href="memorials.html" class="block py-2 hover:text-yellow-300">Мемориалы</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Герои</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Экскурсии</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Контакты</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <script src="js/mobile-menu.js"></script>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl md:text-4xl font-bold mb-6 text-blue-900">Мемориальные комплексы Урала</h1>
+        
+        <!-- Map and Filters -->
+        <div class="relative mb-12">
+            <div class="filter-panel absolute top-4 left-4 bg-white p-4 rounded-lg shadow-md z-10 w-64">
+                <h3 class="font-bold mb-3 text-blue-800">Фильтры</h3>
+                <div class="mb-3">
+                    <label class="block text-sm font-medium mb-1">Город</label>
+                    <select class="w-full p-2 border rounded">
+                        <option>Все города</option>
+                        <option>Екатеринбург</option>
+                        <option>Челябинск</option>
+                        <option>Пермь</option>
+                        <option>Уфа</option>
+                        <option>Магнитогорск</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm font-medium mb-1">Тип мемориала</label>
+                    <select class="w-full p-2 border rounded">
+                        <option>Все типы</option>
+                        <option>Памятники</option>
+                        <option>Мемориальные комплексы</option>
+                        <option>Музеи</option>
+                        <option>Воинские захоронения</option>
+                    </select>
+                </div>
+                <button class="w-full bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+                    Применить фильтры
+                </button>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <!-- Memorial List -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 text-blue-900">Основные мемориалы</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="memorial-list">
+                <!-- Memorial cards will be loaded here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12">
+        <!-- Same footer as index.html -->
+    </footer>
+
+    <script>
+        // Initialize map centered on Ural region
+        const map = L.map('map').setView([56.8431, 60.6454], 6);
+        let allMemorials = [];
+        let markers = [];
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Load memorial data from JSON
+        fetch('assets/memorials.json')
+            .then(response => response.json())
+            .then(data => {
+                allMemorials = data;
+                updateMemorialsDisplay(allMemorials);
+            });
+
+        // Filter elements
+        const cityFilter = document.querySelector('select:nth-of-type(1)');
+        const typeFilter = document.querySelector('select:nth-of-type(2)');
+
+        // Dynamically populate filters
+        function populateFilters() {
+            const cities = [...new Set(allMemorials.map(m => m.city))];
+            const types = [...new Set(allMemorials.map(m => m.type))];
+            
+            cities.forEach(city => {
+                cityFilter.innerHTML += `<option value="${city}">${city}</option>`;
+            });
+            
+            types.forEach(type => {
+                typeFilter.innerHTML += `<option value="${type}">${type}</option>`;
+            });
+        }
+
+        // Filter functionality
+        cityFilter.addEventListener('change', applyFilters);
+        typeFilter.addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const selectedCity = cityFilter.value;
+            const selectedType = typeFilter.value;
+            
+            let filtered = allMemorials;
+            
+            if (selectedCity && selectedCity !== 'Все города') {
+                filtered = filtered.filter(m => m.city === selectedCity);
+            }
+            
+            if (selectedType && selectedType !== 'Все типы') {
+                filtered = filtered.filter(m => m.type === selectedType);
+            }
+            
+            updateMemorialsDisplay(filtered);
+        }
+
+        // Initialize filters after loading data
+        fetch('assets/memorials.json')
+            .then(response => response.json())
+            .then(data => {
+                allMemorials = data;
+                populateFilters();
+                updateMemorialsDisplay(allMemorials);
+            });
+
+        function updateMemorialsDisplay(memorials) {
+            // Clear existing markers
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+            
+            // Clear memorial list
+            const memorialList = document.getElementById('memorial-list');
+            memorialList.innerHTML = '';
+            
+            // Add new markers and list items
+            memorials.forEach(memorial => {
+                const marker = L.marker(memorial.coords, {
+                    icon: L.divIcon({
+                        className: 'memorial-marker',
+                        html: '<i class="fas fa-monument text-white"></i>',
+                        iconSize: [30, 30]
+                    })
+                }).addTo(map);
+                
+                marker.bindPopup(`
+                    <h3 class="font-bold text-lg">${memorial.name}</h3>
+                    <p class="text-gray-700">${memorial.city}</p>
+                    <p class="mt-2">${memorial.description}</p>
+                    <a href="memorial-detail.html?id=${memorial.id}" class="text-blue-600 hover:underline mt-2 inline-block">Подробнее →</a>
+                `);
+                
+                markers.push(marker);
+                
+                memorialList.innerHTML += `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                        <div class="h-48 bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-monument text-5xl text-blue-800"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">${memorial.name}</h3>
+                            <p class="text-gray-600 mb-1">${memorial.city}</p>
+                            <p class="text-gray-600 mb-4">${memorial.type}</p>
+                            <p class="text-gray-700 mb-4">${memorial.description}</p>
+                            <a href="memorial-detail.html?id=${memorial.id}" class="text-blue-700 hover:underline font-medium">Подробнее →</a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
