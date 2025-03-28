@@ -1,0 +1,67 @@
+/* Base styles */
+body {
+    line-height: 1.6;
+    color: #1a202c;
+}
+
+/* Hero section adjustments */
+.hero-bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Timeline enhancements */
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-year {
+    position: absolute;
+    left: -3rem;
+    top: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Card hover effects */
+.tour-card {
+    transition: all 0.3s ease;
+}
+
+.tour-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Mobile menu */
+.mobile-menu {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu {
+        display: block;
+    }
+    .desktop-menu {
+        display: none;
+    }
+}
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
