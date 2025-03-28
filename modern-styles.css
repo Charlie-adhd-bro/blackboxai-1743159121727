@@ -1,0 +1,93 @@
+:root {
+  --primary: #1e3a8a;
+  --secondary: #f59e0b;
+  --accent: #3b82f6;
+  --light: #f8fafc;
+  --dark: #1e293b;
+  --gray: #94a3b8;
+}
+
+/* Base Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--dark);
+  background-color: #f8fafc;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1e40af;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Map Markers */
+.memorial-marker {
+  background: var(--primary);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+              url('../assets/images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 60vh;
+}
