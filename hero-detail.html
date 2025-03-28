@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Герой | Память Урала</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .hero-image {
+            height: 500px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-landmark text-2xl text-yellow-400"></i>
+                <a href="index.html" class="text-2xl font-bold">Память Урала</a>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-yellow-300">Главная</a></li>
+                    <li><a href="memorials.html" class="hover:text-yellow-300">Мемориалы</a></li>
+                    <li><a href="heroes.html" class="hover:text-yellow-300">Герои</a></li>
+                    <li><a href="#" class="hover:text-yellow-300">Экскурсии</a></li>
+                    <li><a href="#" class="hover:text-yellow-300">Контакты</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button md:hidden text-2xl" aria-expanded="false" aria-label="Меню">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden bg-blue-900 text-white">
+            <ul class="px-4 py-2 space-y-2">
+                <li><a href="index.html" class="block py-2 hover:text-yellow-300">Главная</a></li>
+                <li><a href="memorials.html" class="block py-2 hover:text-yellow-300">Мемориалы</a></li>
+                <li><a href="heroes.html" class="block py-2 hover:text-yellow-300">Герои</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Экскурсии</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Контакты</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Hero Header -->
+            <div class="relative">
+                <img id="hero-image" src="assets/images/hero-placeholder.jpg" alt="Герой" class="w-full hero-image">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                    <h1 id="hero-name" class="text-3xl md:text-4xl font-bold text-white">Имя героя</h1>
+                    <div class="flex items-center mt-2 text-white">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        <span id="hero-city">Город</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Details -->
+            <div class="p-6 md:p-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Main Content -->
+                    <div class="md:col-span-2">
+                        <h2 class="text-2xl font-bold mb-4 text-blue-900">Биография</h2>
+                        <p id="hero-description" class="text-gray-700 mb-6">Описание героя...</p>
+                        
+                        <h2 class="text-2xl font-bold mb-4 text-blue-900">Боевой путь</h2>
+                        <div id="hero-biography" class="space-y-4">
+                            <!-- Will be filled by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg mb-3 text-blue-900">Награды</h3>
+                            <ul id="hero-awards" class="space-y-2">
+                                <!-- Will be filled by JavaScript -->
+                            </ul>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg mb-3 text-blue-900">Факты</h3>
+                            <div class="space-y-3">
+                                <p><i class="fas fa-calendar-alt mr-2 text-blue-700"></i> <span id="hero-years">Годы жизни</span></p>
+                                <p><i class="fas fa-medal mr-2 text-blue-700"></i> <span id="hero-rank">Звание</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12">
+        <!-- Same footer as other pages -->
+    </footer>
+
+    <script src="js/mobile-menu.js"></script>
+    <script>
+        // Get hero ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const heroId = urlParams.get('id');
+
+        // Load hero data
+        fetch('assets/heroes.json')
+            .then(response => response.json())
+            .then(heroes => {
+                const hero = heroes.find(h => h.id == heroId);
+                if (hero) {
+                    document.title = `${hero.name} | Память Урала`;
+                    document.getElementById('hero-name').textContent = hero.name;
+                    document.getElementById('hero-city').textContent = hero.city;
+                    document.getElementById('hero-description').textContent = hero.description;
+                    document.getElementById('hero-years').textContent = `${hero.birthYear}-${hero.deathYear}`;
+                    document.getElementById('hero-rank').textContent = hero.rank;
+                    document.getElementById('hero-image').src = hero.image;
+
+                    // Render awards
+                    const awardsList = document.getElementById('hero-awards');
+                    hero.awards.forEach(award => {
+                        awardsList.innerHTML += `<li class="flex items-center">
+                            <i class="fas fa-star text-yellow-500 mr-2"></i>
+                            <span>${award}</span>
+                        </li>`;
+                    });
+                }
+            });
+    </script>
+</body>
+</html>
