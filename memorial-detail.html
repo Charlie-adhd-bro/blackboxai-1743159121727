@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали мемориала | Память Урала</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .memorial-image {
+            height: 400px;
+            object-fit: cover;
+        }
+        .gallery-image {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-landmark text-2xl text-yellow-400"></i>
+                <a href="index.html" class="text-2xl font-bold">Память Урала</a>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-yellow-300">Главная</a></li>
+                    <li><a href="memorials.html" class="hover:text-yellow-300">Мемориалы</a></li>
+                    <li><a href="heroes.html" class="hover:text-yellow-300">Герои</a></li>
+                    <li><a href="tours.html" class="hover:text-yellow-300">Экскурсии</a></li>
+                    <li><a href="contacts.html" class="hover:text-yellow-300">Контакты</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button md:hidden text-2xl" aria-expanded="false" aria-label="Меню">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden bg-blue-900 text-white">
+            <ul class="px-4 py-2 space-y-2">
+                <li><a href="index.html" class="block py-2 hover:text-yellow-300">Главная</a></li>
+                <li><a href="memorials.html" class="block py-2 hover:text-yellow-300">Мемориалы</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Герои</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Экскурсии</a></li>
+                <li><a href="#" class="block py-2 hover:text-yellow-300">Контакты</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <script src="js/mobile-menu.js"></script>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Memorial Header -->
+            <div class="relative">
+                <img src="${memorial.image || 'assets/images/memorial-placeholder.jpg'}" alt="Мемориал" class="w-full memorial-image">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                    <h1 class="text-3xl md:text-4xl font-bold text-white" id="memorial-title">Название мемориала</h1>
+                    <div class="flex items-center mt-2 text-white">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        <span id="memorial-location">Город, Адрес</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memorial Details -->
+            <div class="p-6 md:p-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Main Content -->
+                    <div class="md:col-span-2">
+                        <h2 class="text-2xl font-bold mb-4 text-blue-900">Историческая справка</h2>
+                        <p class="text-gray-700 mb-6" id="memorial-description">Описание мемориала...</p>
+                        
+                        <h2 class="text-2xl font-bold mb-4 text-blue-900">Исторические факты</h2>
+                        <div class="space-y-4" id="historical-facts">
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 text-blue-800 rounded-full p-2 mr-3">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold">Год создания</h3>
+                                    <p class="text-gray-700" id="creation-year">1943</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg mb-3 text-blue-900">Информация для посещения</h3>
+                            <div class="space-y-3">
+                                <p><i class="fas fa-clock mr-2 text-blue-700"></i> <span id="opening-hours">Ежедневно с 9:00 до 18:00</span></p>
+                                <p><i class="fas fa-ruble-sign mr-2 text-blue-700"></i> <span id="entrance-fee">Вход свободный</span></p>
+                                <p><i class="fas fa-phone mr-2 text-blue-700"></i> <span id="contact-phone">+7 (XXX) XXX-XX-XX</span></p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-lg mb-3 text-blue-900">Как добраться</h3>
+                            <p class="text-gray-700 mb-3" id="transport-info">Описание транспорта...</p>
+                            <button class="w-full bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+                                <i class="fas fa-map-marked-alt mr-2"></i> Показать на карте
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery -->
+                <div class="mt-12">
+                    <h2 class="text-2xl font-bold mb-6 text-blue-900">Фотогалерея</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="gallery">
+                        <img src="assets/images/memorial1.jpg" alt="Фото мемориала" class="gallery-image rounded-lg">
+                        <img src="assets/images/memorial2.jpg" alt="Фото мемориала" class="gallery-image rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Map Modal -->
+    <div id="map-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden">
+        <div class="relative w-full h-full">
+            <div class="absolute top-4 right-4">
+                <button id="close-map" class="bg-white text-gray-800 rounded-full p-2 shadow-lg hover:bg-gray-200 transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="memorial-map" class="w-full h-full"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12">
+        <!-- Same footer as index.html -->
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script>
+        // Get memorial ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const memorialId = urlParams.get('id');
+        let memorialMap;
+
+        // Load memorial data
+        fetch('assets/memorials.json')
+            .then(response => response.json())
+            .then(memorials => {
+                const memorial = memorials.find(m => m.id == memorialId);
+                if (memorial) {
+                    // Update page content
+                    document.title = `${memorial.name} | Память Урала`;
+                    document.getElementById('memorial-title').textContent = memorial.name;
+                    document.getElementById('memorial-location').textContent = memorial.city;
+                    document.getElementById('memorial-description').textContent = memorial.description;
+                    document.getElementById('memorial-image').src = memorial.image || 'assets/images/memorial-placeholder.jpg';
+
+                    // Initialize map
+                    initMap(memorial.coords);
+                    
+                    // Add more historical data
+                    addHistoricalData(memorial);
+                } else {
+                    showError('Мемориал не найден');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showError('Не удалось загрузить данные о мемориале');
+            });
+
+        function showError(message) {
+            document.getElementById('memorial-title').textContent = 'Ошибка';
+            document.getElementById('memorial-description').innerHTML = `
+                <div class="text-center py-8">
+                    <i class="fas fa-exclamation-triangle text-yellow-500 text-4xl mb-4"></i>
+                    <p class="text-lg">${message}</p>
+                    <a href="memorials.html" class="mt-4 inline-block bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+                        Вернуться к списку мемориалов
+                    </a>
+                </div>
+            `;
+        }
+
+        function initMap(coords) {
+            memorialMap = L.map('memorial-map').setView(coords, 15);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(memorialMap);
+
+            L.marker(coords, {
+                icon: L.divIcon({
+                    className: 'memorial-marker',
+                    html: '<i class="fas fa-monument text-white"></i>',
+                    iconSize: [30, 30]
+                })
+            }).addTo(memorialMap);
+        }
+
+        function addHistoricalData(memorial) {
+            const factsContainer = document.getElementById('historical-facts');
+            
+            // Add creation year if available
+            if (memorial.year) {
+                factsContainer.innerHTML += `
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 text-blue-800 rounded-full p-2 mr-3">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Год создания</h3>
+                            <p class="text-gray-700">${memorial.year}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Add architect if available
+            if (memorial.architect) {
+                factsContainer.innerHTML += `
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 text-blue-800 rounded-full p-2 mr-3">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Автор проекта</h3>
+                            <p class="text-gray-700">${memorial.architect}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Add historical significance
+            factsContainer.innerHTML += `
+                <div class="flex items-start">
+                    <div class="bg-blue-100 text-blue-800 rounded-full p-2 mr-3">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold">Историческое значение</h3>
+                        <p class="text-gray-700">${memorial.historicalSignificance || 'Важный памятник Великой Отечественной войны'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show map button functionality
+        document.getElementById('show-map-btn').addEventListener('click', () => {
+            document.getElementById('map-modal').classList.remove('hidden');
+        });
+
+        // Close map modal
+        document.getElementById('close-map').addEventListener('click', () => {
+            document.getElementById('map-modal').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
