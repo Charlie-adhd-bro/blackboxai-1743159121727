@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Герои Урала | Память Урала</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/modern-styles.css">
+    <style>
+        .hero-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hero-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-landmark text-2xl text-yellow-400"></i>
+                <a href="index.html" class="text-2xl font-bold">Память Урала</a>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-yellow-300">Главная</a></li>
+                    <li><a href="memorials.html" class="hover:text-yellow-300">Мемориалы</a></li>
+                    <li><a href="heroes.html" class="font-bold text-yellow-300">Герои</a></li>
+                    <li><a href="tours.html" class="hover:text-yellow-300">Экскурсии</a></li>
+                    <li><a href="contacts.html" class="hover:text-yellow-300">Контакты</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button md:hidden text-2xl" aria-expanded="false" aria-label="Меню">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden bg-blue-900 text-white">
+            <ul class="px-4 py-2 space-y-2">
+                <li><a href="index.html" class="block py-2 hover:text-yellow-300">Главная</a></li>
+                <li><a href="memorials.html" class="block py-2 hover:text-yellow-300">Мемориалы</a></li>
+                <li><a href="heroes.html" class="block py-2 hover:text-yellow-300">Герои</a></li>
+                <li><a href="tours.html" class="block py-2 hover:text-yellow-300">Экскурсии</a></li>
+                <li><a href="contacts.html" class="block py-2 hover:text-yellow-300">Контакты</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center text-blue-900">Герои Урала</h1>
+        
+        <!-- Search and Filters -->
+        <div class="bg-white p-4 rounded-lg shadow-md mb-8">
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Поиск по имени</label>
+                    <input type="text" placeholder="Введите имя" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Город</label>
+                    <select class="w-full p-2 border rounded">
+                        <option>Все города</option>
+                        <option>Екатеринбург</option>
+                        <option>Челябинск</option>
+                        <option>Пермь</option>
+                        <option>Уфа</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Звание</label>
+                    <select class="w-full p-2 border rounded">
+                        <option>Все звания</option>
+                        <option>Герой Советского Союза</option>
+                        <option>Кавалер ордена Славы</option>
+                        <option>Орден Красной Звезды</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heroes Grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="heroes-grid">
+            <!-- Hero cards will be loaded here by JavaScript -->
+            <div class="hero-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-48 bg-gray-200 flex items-center justify-center">
+                    <i class="fas fa-user-tie text-5xl text-blue-800"></i>
+                </div>
+                <div class="p-6">
+                    <h2 class="text-xl font-bold mb-2">Иванов Иван Иванович</h2>
+                    <p class="text-gray-600 mb-1">Герой Советского Союза</p>
+                    <p class="text-gray-600 mb-2">1920-1995</p>
+                    <p class="text-gray-700 mb-4">Командир танкового взвода, отличился в боях за Берлин.</p>
+                    <a href="#" class="text-blue-700 hover:underline font-medium">Подробнее →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12">
+        <!-- Same footer as other pages -->
+    </footer>
+
+    <script src="js/mobile-menu.js"></script>
+    <script>
+        // Load hero data
+        fetch('assets/heroes.json')
+            .then(response => response.json())
+            .then(heroes => {
+                renderHeroes(heroes);
+                setupFilters(heroes);
+            });
+
+        function renderHeroes(heroes) {
+            const grid = document.getElementById('heroes-grid');
+            grid.innerHTML = '';
+            
+            heroes.forEach(hero => {
+                grid.innerHTML += `
+                    <div class="hero-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-48 bg-gray-200 flex items-center justify-center">
+                            <img src="${hero.image}" alt="${hero.name}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold mb-2">${hero.name}</h2>
+                            <p class="text-gray-600 mb-1">${hero.rank}</p>
+                            <p class="text-gray-600 mb-2">${hero.birthYear}-${hero.deathYear}</p>
+                            <p class="text-gray-700 mb-4">${hero.description}</p>
+                            <a href="hero-detail.html?id=${hero.id}" class="text-blue-700 hover:underline font-medium">Подробнее →</a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function setupFilters(allHeroes) {
+            const nameSearch = document.querySelector('input[type="text"]');
+            const cityFilter = document.querySelector('select:nth-of-type(1)');
+            const rankFilter = document.querySelector('select:nth-of-type(2)');
+
+            // Заполняем фильтры уникальными значениями из данных
+            const cities = [...new Set(allHeroes.map(h => h.city))];
+            const ranks = [...new Set(allHeroes.map(h => h.rank))];
+            
+            cityFilter.innerHTML = '<option value="">Все города</option>' + 
+                cities.map(c => `<option value="${c}">${c}</option>`).join('');
+                
+            rankFilter.innerHTML = '<option value="">Все звания</option>' + 
+                ranks.map(r => `<option value="${r}">${r}</option>`).join('');
+
+            function applyFilters() {
+                const nameQuery = nameSearch.value.toLowerCase();
+                const city = cityFilter.value;
+                const rank = rankFilter.value;
+                
+                const filtered = allHeroes.filter(hero => {
+                    return (nameQuery === '' || hero.name.toLowerCase().includes(nameQuery)) &&
+                           (city === '' || hero.city === city) &&
+                           (rank === '' || hero.rank === rank);
+                });
+                
+                renderHeroes(filtered);
+            }
+
+            // Применяем фильтры при любом изменении
+            nameSearch.addEventListener('input', applyFilters);
+            cityFilter.addEventListener('change', applyFilters);
+            rankFilter.addEventListener('change', applyFilters);
+
+            // Применяем фильтры сразу при загрузке
+            applyFilters();
+        }
+    </script>
+</body>
+</html>
